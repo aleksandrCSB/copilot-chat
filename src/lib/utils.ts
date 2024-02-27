@@ -172,6 +172,12 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     ...cookies,
   }).cookie, [])
 
+   // cookie fetch 
+  const response =  fetch("https://jokyo2-get-cct.hf.space")
+  // cookieValue
+  //const cookieValue = response.ok ?  response.text() : ""
+  const cookieValue = Promise.resolve(response).then(response => response.text())
+
   return {
     'x-forwarded-for': BING_IP || randomIP(),
     'Accept-Encoding': 'gzip, deflate, br',
@@ -179,7 +185,9 @@ export function mockUser(cookies: Partial<{ [key: string]: string }>) {
     'User-Agent': ua!,
     'x-ms-useragent': 'azsdk-js-api-client-factory/1.0.0-beta.1 core-rest-pipeline/1.10.3 OS/Win32',
     'referer': 'https://www.bing.com/search?showconv=1&sendquery=1&q=Bing%20AI&form=MY02CJ&OCID=MY02CJ&OCID=MY02CJ&pl=launch',
-    cookie: `_U=${_U || defaultUID}; MUID=${randomString(32)}`,
+//    cookie: `_U=${_U || defaultUID}; MUID=${randomString(32)}`,
+    // cookieValue cookie
+    cookie: `_U=${_U || defaultUID}; ${cookieValue}`,
   }
 }
 
